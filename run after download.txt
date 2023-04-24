@@ -1,0 +1,2 @@
+## IN COMMAND PROMPT WITH VENV ##
+pip install -r requirements.txt 
