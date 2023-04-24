@@ -1,0 +1,22 @@
+{% extends "parent.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<form method="POST" novalidate>
+	{% csrf_token %}
+	{% for field in form %}
+	<p>
+		{% if field.errors %}
+		<ul class="errorlist">
+			{% for error in field.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	 	{{ field.label_tag }} {{ field }}
+	</p>
+	{% endfor %}
+	<input type="submit" value="Register" />
+</form>
+
+{% endblock %}

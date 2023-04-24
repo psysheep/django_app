@@ -1,0 +1,33 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webble book list</title>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author(s)</th>
+      <th scope="col">Genre(s)</th>
+      <th scope="col">Publish date</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for book in object_list %}
+    <tr>
+        <td><a href="{% url 'library:book' pk=book.pk %}">{{ book.title }}</a></td>
+        <td>{{ book.get_many_string.authors }}</td>
+        <td>{{ book.get_many_string.genres }}</td>
+        <td>{{ book.publishing_date }}</td>
+    </tr>
+       {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

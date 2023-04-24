@@ -1,0 +1,28 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<html>
+<head>
+    <title>{{ book.title }}</title>
+    <style>
+            body {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        {% if prev_page %}
+        <a href="{% url 'library:pdf_page' book_pk=book.id page_number=prev_page %}"
+           class="btn btn-outline-primary">Previous</a>
+        {% endif %}
+        {% if next_page <= book_length %}
+        <a href="{% url 'library:pdf_page' book_pk=book.id page_number=next_page %}"
+           class="btn btn-outline-primary">Next</a>
+        {% endif %}
+    </div>
+    <iframe src="{{ page_pdf }}" width="600" height="830px"></iframe>
+</body>
+</html>
+{% endblock %}

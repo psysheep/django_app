@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    {% load static %}
+  <link rel="stylesheet" href="{% static 'webble_page/main.css' %}">
+</head>
+  <div class="row">
+    {% include 'navbar.html' %}
+    <div class="col-md-3 offset-md-4">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-warning" role="alert">
+            <a href="#" class="alert-link">{{ message }}</a>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </div>
+</html>

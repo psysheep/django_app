@@ -1,0 +1,21 @@
+{% extends 'parent.html' %}
+
+{% block content %}
+
+<title>Book ID:{{ book.pk }}</title>
+<br/>
+    <h2> {{ book.title }} </h2>
+    <div class="card" style="width: 45rem;">
+    <div class="card-header">
+    Rating
+    </div>
+        <div class="card-body">
+            <h5 class="card-title"> by {{ book.get_many_string.authors }}</h5>
+            <p class="card-text">Published in {{ book.publishing_date }}
+                <br/><br/>
+            {{ book.description }}</p>
+            <a href="{% url 'library:pdf_page' book_pk=book.pk page_number=1 %}" class="btn btn-outline-primary">Read</a>
+            <a href="{% url 'library:books' %}" class="btn btn-outline-primary">Back to list</a>
+        </div>
+    </div>
+{% endblock %}
