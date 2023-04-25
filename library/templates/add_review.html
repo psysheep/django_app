@@ -1,0 +1,17 @@
+{% extends 'parent.html' %}
+
+{% block content %}
+
+    <div class="card" style="width: 45rem;" id="review-form" style="display: none;">
+        <div class="card-header">
+            <h5 class="card-title">Leave a review:</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% url 'library:leave_review' book.pk %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
