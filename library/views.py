@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 
 from .methods.book_reader import view_single_page
-from .models import Book
+from .models import Book, Review
 from .forms import ReviewForm
 
 
