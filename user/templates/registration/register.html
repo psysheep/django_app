@@ -1,11 +1,11 @@
 {% extends "parent.html" %}
 {% block content %}
-{% load crispy_forms_tags %}
 
-<form method="POST" novalidate>
+{% load crispy_forms_tags %}
+<br/>
+<form method="POST" novalidate class="card" style="width: 45rem;">
 	{% csrf_token %}
 	{% for field in form %}
-	<p>
 		{% if field.errors %}
 		<ul class="errorlist">
 			{% for error in field.errors %}
@@ -14,9 +14,8 @@
 		</ul>
 		{% endif %}
 	 	{{ field.label_tag }} {{ field }}
-	</p>
 	{% endfor %}
-	<input type="submit" value="Register" />
+	<input class="btn btn-success" type="submit"  value="Register" />
 </form>
 
 {% endblock %}

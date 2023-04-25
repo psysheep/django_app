@@ -52,5 +52,4 @@ class LeaveReview(LoginRequiredMixin, generic.View):
             review.user = request.user
             review.save()
             return redirect('library:book', pk=book.pk)
-
         return render(request, self.template_name, {'form': form, 'book': book})

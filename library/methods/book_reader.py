@@ -4,13 +4,12 @@ from django.http import HttpResponse
 
 import base64
 from datetime import datetime
-from library.models import Book, ReadingProgress
+from library.models import Book, ReadingProgress, Review
 
 
 def view_single_page(book_pk: int, page: int) -> dict:
     book = get_object_or_404(Book, pk=book_pk)
     with open(book.pdf.name, 'rb') as file:
-        book_length = len(PyPDF2.PdfReader(file).pages)
         data = PyPDF2.PdfReader(file).pages[page-1]
         display_page = PyPDF2.PdfWriter()
         display_page.add_page(data)
@@ -24,7 +23,7 @@ def view_single_page(book_pk: int, page: int) -> dict:
             'page_number': page,
             'prev_page': page-1,
             'next_page': page+1,
-            'book_length': book_length
+            'book_length': len(PyPDF2.PdfReader(file).pages)
         }
         return context
 
@@ -33,8 +32,16 @@ def progress_update(user, book_pk, page, length):
     progress, created = ReadingProgress.objects.get_or_create(user=user, book_id=book_pk)
     if page == length:
         progress.finished = datetime.now()
-    if page > progress.last_page:
+    if progress.last_page < page <= length:
         progress.last_page = page
     else:
         pass
     progress.save()
+
+
+def check_reviewed(user, book_pk):
+    try:
+        review = bool(Review.objects.get(user=user, book=book_pk))
+    except Review.DoesNotExist:
+        review = False
+    return review

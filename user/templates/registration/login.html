@@ -1,6 +1,12 @@
+{% extends "parent.html" %}
+{% block content %}
+
+
 {% load crispy_forms_tags %}
 <form method="POST">
     {% csrf_token %}{{form|crispy}}
 <p>Don't have an account? Create one <a href="/user/register">Here</a></p>
 <button type="submit" class="btn btn-info">Login</button>
 </form>
+
+{% endblock %}

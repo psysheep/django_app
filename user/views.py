@@ -11,7 +11,7 @@ def register_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'You have been Signed Up!')
-        return redirect('library:books')
+        return redirect('user:login')
     else:
         form = RegistrationForm()
     return render(request, 'registration/register.html', {'form': form})

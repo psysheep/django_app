@@ -2,6 +2,7 @@ from django.utils.timezone import now
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Author(models.Model):
     name = models.CharField(max_length=80, blank=False)
     surname = models.CharField(max_length=80, blank=False)
@@ -29,7 +30,6 @@ class Book(models.Model):
 
     def __str__(self):
         return f'{self.title}'
-
 
     def get_many_string(self):
         authors = ', '.join(str(author) for author in self.authors.all())
