@@ -2,7 +2,6 @@ from django.utils.timezone import now
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Author(models.Model):
     name = models.CharField(max_length=80, blank=False)
     surname = models.CharField(max_length=80, blank=False)
@@ -57,6 +56,6 @@ class Review(models.Model):
 class ReadingProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    started = models.DateField(auto_now_add=True)
-    finished = models.DateField(default=None)
-    last_page = models.IntegerField()
+    started = models.DateField(default=now)
+    finished = models.DateField(null=True)
+    last_page = models.IntegerField(null=True, default=0)

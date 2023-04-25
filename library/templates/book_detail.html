@@ -19,13 +19,7 @@
             {{ book.description }}</p>
             <a href="{% url 'library:pdf_page' book_pk=book.pk page_number=1 %}" class="btn btn-outline-primary">Read</a>
             {% if user.is_authenticated %}
-                {% for review in book.reviews.all %}
-                {% if user == review.user %}
-                    <a href="#" class="btn btn-outline-primary">You have already left a review for this book</a>
-                {% else %}
-                    <a href="{% url 'library:leave_review' book_pk=book.pk %}" class="btn btn-outline-primary">Leave a review</a>
-                {% endif %}
-                {% endfor %}
+            <a href="{% url 'library:leave_review' book_pk=book.pk %}" class="btn btn-outline-primary">Leave a review</a>
             {% else %}
             <a href="{% url 'user:login' %}" class="btn btn-outline-primary">Login</a>
             {% endif %}
@@ -40,11 +34,12 @@
             {% for review in book.reviews.all %}
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-text">{{ review.subject }} </strong>
+                        <strong class="card-text">{{ review.user.username }}</strong><br/>
+                        <small class="card-text">{{ review.created_at }}</small>
                     </div>
                     <div class="card-body">
-                        <i class="card-text">{{ review.text }}</i><br/><br/>
-                        <sub class="card-title">{{ review.user.username }} - {{ review.created_at }}</sub>
+                        <em> "{{ review.subject }}"</em><br/>
+                        <i class="card-text">{{ review.text }}</i>
                     </div>
                 </div>
             {% empty %}

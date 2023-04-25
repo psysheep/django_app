@@ -17,6 +17,8 @@
         <a href="{% url 'library:pdf_page' book_pk=book.id page_number=prev_page %}"
            class="btn btn-outline-primary">Previous</a>
         {% endif %}
+        <a href="{% url 'library:book' pk=book.id %}"
+           class="btn btn-outline-primary">Book details</a>
         {% if next_page <= book_length %}
         <a href="{% url 'library:pdf_page' book_pk=book.id page_number=next_page %}"
            class="btn btn-outline-primary">Next</a>

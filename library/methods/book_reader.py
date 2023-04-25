@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
 import base64
-from library.models import Book
+from datetime import datetime
+from library.models import Book, ReadingProgress
 
 
 def view_single_page(book_pk: int, page: int) -> dict:
@@ -26,3 +27,14 @@ def view_single_page(book_pk: int, page: int) -> dict:
             'book_length': book_length
         }
         return context
+
+
+def progress_update(user, book_pk, page, length):
+    progress, created = ReadingProgress.objects.get_or_create(user=user, book_id=book_pk)
+    if page == length:
+        progress.finished = datetime.now()
+    if page > progress.last_page:
+        progress.last_page = page
+    else:
+        pass
+    progress.save()

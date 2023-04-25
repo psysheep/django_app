@@ -4,8 +4,8 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 
-from .methods.book_reader import view_single_page
-from .models import Book, Review
+from .methods.book_reader import view_single_page, progress_update
+from .models import Book
 from .forms import ReviewForm
 
 
@@ -30,6 +30,7 @@ class BookList(generic.ListView):
 @login_required(login_url='user:login')
 def pdf_page_view(request, book_pk, page_number):
     page = view_single_page(book_pk, page_number)
+    progress_update(request.user, book_pk, page_number, page['book_length'])
     return render(request, 'pdf_page.html', page)
 
 
