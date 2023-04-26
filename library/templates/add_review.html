@@ -1,15 +1,21 @@
 {% extends 'parent.html' %}
 
 {% block content %}
-    <div class="card" style="width: 45rem;" id="review-form" style="display: none;">
+    <br/>
+    <div class="card" style="width: 45rem;" id="review-form">
         <div class="card-header">
-            <h5 class="card-title">Leave a review:</h5>
+            <strong class="card-title">Review:</strong>
         </div>
         <div class="card-body">
             <form method="post" action="{% url 'library:leave_review' book.pk %}">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-outline-primary">Submit</button>
+                {% if reviewed %}
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" name="delete" class="btn btn-danger">Delete</button>
+                {% else %}
+                    <button type="submit" class="btn btn-success">Submit</button>
+                {% endif %}
             </form>
         </div>
     </div>

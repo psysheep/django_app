@@ -4,7 +4,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 
-from .methods.book_reader import view_single_page, progress_update
+from .methods.book_reader import view_single_page, progress_update, check_reviewed
 from .models import Book
 from .forms import ReviewForm
 
@@ -18,6 +18,8 @@ class BookDetail(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['reviews'] = self.object.reviews.all()
         context['average_rating'] = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
+        if self.request.user.is_authenticated:
+            context['reviewed'] = check_reviewed(self.request.user.pk, self.object.pk)
         return context
 
 
@@ -39,13 +41,18 @@ class LeaveReview(LoginRequiredMixin, generic.View):
     template_name = 'add_review.html'
 
     def get(self, request, book_pk):
-        form = ReviewForm()
+        existing_review = check_reviewed(request.user.pk, book_pk)
+        form = ReviewForm(instance=existing_review) if existing_review else ReviewForm()
         book = Book.objects.get(pk=book_pk)
-        return render(request, self.template_name, {'form': form, 'book': book})
+        return render(request, self.template_name, {'form': form, 'book': book, 'reviewed': bool(existing_review)})
 
     def post(self, request, book_pk):
+        existing_review = check_reviewed(request.user.pk, book_pk)
         form = ReviewForm(request.POST)
         book = Book.objects.get(pk=book_pk)
+        if 'delete' in request.POST:
+            existing_review.delete()
+            return redirect('library:book', pk=book.pk)
         if form.is_valid():
             review = form.save(commit=False)
             review.book = book

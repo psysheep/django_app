@@ -41,7 +41,7 @@ def progress_update(user, book_pk, page, length):
 
 def check_reviewed(user, book_pk):
     try:
-        review = bool(Review.objects.get(user=user, book=book_pk))
+        review = Review.objects.get(user=user, book=book_pk)
     except Review.DoesNotExist:
-        review = False
+        review = None
     return review
