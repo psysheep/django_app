@@ -11,7 +11,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 {% if reviewed %}
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-success">Update</button>
                     <button type="submit" name="delete" class="btn btn-danger">Delete</button>
                 {% else %}
                     <button type="submit" class="btn btn-success">Submit</button>

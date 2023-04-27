@@ -41,8 +41,8 @@ class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0, blank=True, null=True)
-    subject = models.CharField(max_length=255, blank=True)
-    text = models.TextField()
+    subject = models.CharField(max_length=30, blank=True)
+    text = models.TextField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -59,3 +59,6 @@ class ReadingProgress(models.Model):
     started = models.DateField(default=now)
     finished = models.DateField(null=True)
     last_page = models.IntegerField(null=True, default=0)
+
+    class Meta:
+        unique_together = ('book', 'user',)
