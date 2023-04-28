@@ -12,7 +12,7 @@ integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtv
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
     {% if user.is_authenticated %}
         <span class="navbar-text"> Welcome </span>
-        <a class="nav-item nav-link" href="{% url 'library:books' %}"> {{ user.username }} </a>
+        <a class="nav-item nav-link" href="{% url 'user:user_page' username=user.username %}"> {{ user.username }} </a>
         <a class="nav-item nav-link" href="{% url 'user:logout' %}">Logout</a>
     {% else %}
         <a class="nav-item nav-link" href="{% url 'user:login' %}">Login</a>

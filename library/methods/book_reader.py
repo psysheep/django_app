@@ -4,7 +4,8 @@ from django.http import HttpResponse
 
 import base64
 from datetime import datetime
-from library.models import Book, ReadingProgress, Review
+from library.models import Book
+from user.models import ReadingProgress, Review
 
 
 def view_single_page(book_pk: int, page: int) -> dict:
@@ -28,7 +29,7 @@ def view_single_page(book_pk: int, page: int) -> dict:
         return context
 
 
-def progress_update(user, book_pk, page, length):
+def update_progress(user, book_pk, page, length):
     progress, created = ReadingProgress.objects.get_or_create(user=user, book_id=book_pk)
     if page == length:
         progress.finished = datetime.now()
@@ -47,7 +48,7 @@ def check_reviewed(user, book_pk):
     return review
 
 
-def get_last_page(user, book_pk):
+def get_user_page(user, book_pk):
     try:
         page = ReadingProgress.objects.get(user=user, book=book_pk)
         page = page.last_page

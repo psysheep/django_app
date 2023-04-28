@@ -4,7 +4,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 
-from .methods.book_reader import view_single_page, progress_update, check_reviewed, get_last_page
+from .methods.book_reader import view_single_page, update_progress, check_reviewed, get_user_page
 from .models import Book
 from .forms import ReviewForm
 
@@ -19,7 +19,7 @@ class BookDetail(generic.DetailView):
         context['average_rating'] = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
         if self.request.user.is_authenticated:
             context['reviewed'] = check_reviewed(self.request.user.pk, self.object.pk)
-            context['page'] = get_last_page(self.request.user.pk, self.object.pk)
+            context['page'] = get_user_page(self.request.user.pk, self.object.pk)
         return context
 
 
@@ -41,7 +41,7 @@ class BookList(generic.ListView):
 @login_required(login_url='user:login')
 def pdf_page_view(request, book_pk, page_number):
     page = view_single_page(book_pk, page_number)
-    progress_update(request.user, book_pk, page_number, page['book_length'])
+    update_progress(request.user, book_pk, page_number, page['book_length'])
     return render(request, 'pdf_page.html', page)
 
 
