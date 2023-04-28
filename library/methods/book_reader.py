@@ -45,3 +45,12 @@ def check_reviewed(user, book_pk):
     except Review.DoesNotExist:
         review = None
     return review
+
+
+def get_last_page(user, book_pk):
+    try:
+        page = ReadingProgress.objects.get(user=user, book=book_pk)
+        page = page.last_page
+    except ReadingProgress.DoesNotExist:
+        page = 1
+    return page

@@ -4,7 +4,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 
-from .methods.book_reader import view_single_page, progress_update, check_reviewed
+from .methods.book_reader import view_single_page, progress_update, check_reviewed, get_last_page
 from .models import Book
 from .forms import ReviewForm
 
@@ -19,6 +19,7 @@ class BookDetail(generic.DetailView):
         context['average_rating'] = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
         if self.request.user.is_authenticated:
             context['reviewed'] = check_reviewed(self.request.user.pk, self.object.pk)
+            context['page'] = get_last_page(self.request.user.pk, self.object.pk)
         return context
 
 
@@ -30,10 +31,10 @@ class BookList(generic.ListView):
         search = self.request.GET.get('search')
         object_list = self.model.objects.all()
         if self.request.GET.get('search'):
-            object_list = object_list.filter(Q(title__icontains=search) |
-                                             Q(genres__genre__icontains=search) |
-                                             Q(authors__name__icontains=search) |
-                                             Q(authors__surname__icontains=search))
+            object_list = object_list.filter(Q(title__contains=search) |
+                                             Q(genres__genre__contains=search) |
+                                             Q(authors__name__contains=search) |
+                                             Q(authors__surname__contains=search))
         return object_list.distinct()
 
 
