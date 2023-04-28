@@ -33,7 +33,7 @@
             <strong class="card-title">Reviews:</strong>
         </div>
         <div class="card-body">
-            {% for review in book.reviews.all %}
+            {% for review in reviews %}
                 <div class="card">
                     <div class="card-header">
                         <strong class="card-text">{{ review.user.username }}</strong><br/>
