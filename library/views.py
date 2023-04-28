@@ -29,11 +29,11 @@ class BookList(generic.ListView):
     def get_queryset(self):
         search = self.request.GET.get('search')
         object_list = self.model.objects.all()
-        if search:
+        if self.request.GET.get('search'):
             object_list = object_list.filter(Q(title__icontains=search) |
-                                             Q(description__icontains=search) |
+                                             Q(genres__genre__icontains=search) |
                                              Q(authors__name__icontains=search) |
-                                             Q(genres__genre__icontains=search))
+                                             Q(authors__surname__icontains=search))
         return object_list.distinct()
 
 
