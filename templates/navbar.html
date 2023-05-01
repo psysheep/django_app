@@ -21,6 +21,11 @@ integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtv
 </div>
 </div>
 </div>
+    <li>
+    <form action="{% url 'library:search_n' %}" method="GET" class="form-inline">
+        <input type="text" name="search_text" class="form_control" placeholder="Search">
+    </form>
+    </li>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
 integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
