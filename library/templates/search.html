@@ -1,0 +1,18 @@
+{% extends 'navbar.html' %}
+{% block content %}
+
+<h1>Search "{{ query_text_c }}" results: </h1>
+<hr/>
+{% if query_result_c %}
+    <ul>
+        {% for book_obj in query_result_c %}
+        <li>
+            {{% book_obj.title %}}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p> No results found </p>
+{% endif %}
+
+{% endblock %}

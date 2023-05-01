@@ -1,0 +1,17 @@
+
+
+<!--        <aside class="col-md-3">-->
+        {% if user.ratingreview_set.all %}
+            <ul class="sidebar-nav">
+            {% for review_obj in user.ratingreview_set.all %}
+            <hr>
+            <strong>{{ review_obj.user }}</strong>, <em>{{ review_obj.date }} </em>, Rating {{ review_obj.rating }}
+            <p> {{ review_obj.review }} </p>
+
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p> No reviews yet. </p>
+        {% endif %}
+<!--        </aside>-->
+
