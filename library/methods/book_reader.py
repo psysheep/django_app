@@ -31,7 +31,7 @@ def view_single_page(book_pk: int, page: int) -> dict:
 
 def update_progress(user, book_pk, page, length):
     progress, created = ReadingProgress.objects.get_or_create(user=user, book_id=book_pk)
-    if page == length:
+    if page == length and not progress.finished:
         progress.finished = datetime.now()
     if progress.last_page < page <= length:
         progress.last_page = page

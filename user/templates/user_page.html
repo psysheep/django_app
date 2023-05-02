@@ -19,9 +19,11 @@
                 <small class="card-text">
                     <a href="{% url 'library:pdf_page' book_pk=reading.book.pk page_number=reading.last_page %}">
                         {{ reading.last_page }}</a></small><br>
-                <small class="card-text">Started reading: {{ reading.started }}</small>
+                <Strong class="card-text">Started reading:</Strong>
+                <small> {{ reading.started }}</small>
                 {% if reading.finished %}
-                   <br><small class="card-text">Finished reading: {{ reading.finished }}</small>
+                    <Strong class="card-text">Finished reading: </Strong>
+                    <small> {{ reading.finished }}</small>
                 {% endif %}
             </div>
         </div>

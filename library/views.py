@@ -1,12 +1,10 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 
 from .methods.book_reader import view_single_page, update_progress, check_reviewed, get_user_page
 from .models import Book
-from .forms import ReviewForm
 
 
 class BookDetail(generic.DetailView):
@@ -43,29 +41,3 @@ def pdf_page_view(request, book_pk, page_number):
     page = view_single_page(book_pk, page_number)
     update_progress(request.user, book_pk, page_number, page['book_length'])
     return render(request, 'pdf_page.html', page)
-
-
-class LeaveReview(LoginRequiredMixin, generic.View):
-    login_url = 'user:login'
-    template_name = 'add_review.html'
-
-    def get(self, request, book_pk):
-        existing_review = check_reviewed(request.user.pk, book_pk)
-        form = ReviewForm(instance=existing_review) if existing_review else ReviewForm()
-        book = Book.objects.get(pk=book_pk)
-        return render(request, self.template_name, {'form': form, 'book': book, 'reviewed': bool(existing_review)})
-
-    def post(self, request, book_pk):
-        existing_review = check_reviewed(request.user.pk, book_pk)
-        form = ReviewForm(request.POST, instance=existing_review)
-        book = Book.objects.get(pk=book_pk)
-        if 'delete' in request.POST:
-            existing_review.delete()
-            return redirect('library:book', pk=book.pk)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.book = book
-            review.user = request.user
-            review.save()
-            return redirect('library:book', pk=book.pk)
-        return render(request, self.template_name, {'form': form, 'book': book})

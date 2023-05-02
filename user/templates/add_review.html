@@ -7,7 +7,7 @@
             <strong class="card-title">Review:</strong>
         </div>
         <div class="card-body">
-            <form method="post" action="{% url 'library:leave_review' book.pk %}">
+            <form method="post" action="{% url 'user:leave_review' book.pk %}">
                 {% csrf_token %}
                 {{ form.as_p }}
                 {% if reviewed %}

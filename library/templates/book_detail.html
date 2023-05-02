@@ -18,9 +18,9 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'library:pdf_page' book_pk=book.pk page_number=page %}" class="btn btn-primary">Read</a>
                 {% if reviewed %}
-                    <a href="{% url 'library:leave_review' book_pk=book.pk %}" class="btn btn-success">Update review</a>
+                    <a href="{% url 'user:leave_review' book_pk=book.pk %}" class="btn btn-success">Update review</a>
                 {% else %}
-                    <a href="{% url 'library:leave_review' book_pk=book.pk %}" class="btn btn-primary">Leave a review</a>
+                    <a href="{% url 'user:leave_review' book_pk=book.pk %}" class="btn btn-primary">Leave a review</a>
                 {% endif %}
             {% else %}
             <a href="{% url 'user:login' %}?next={{ request.path }}" class="btn btn-primary">Login</a>
