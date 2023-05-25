@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
@@ -40,4 +40,6 @@ class BookList(generic.ListView):
 def pdf_page_view(request, book_pk, page_number):
     page = view_single_page(book_pk, page_number)
     update_progress(request.user, book_pk, page_number, page['book_length'])
+    if request.method == 'POST':
+        return redirect('library:pdf_page', book_pk=book_pk, page_number=request.POST['page'])
     return render(request, 'pdf_page.html', page)

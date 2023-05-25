@@ -12,6 +12,14 @@
     </style>
 </head>
 <body>
+    <strong>Current page:{{page_number}}/{{book_length}}</strong>
+    <form method="post">
+        {% csrf_token %}
+        <label for="page">Go to:</label>
+        <input type="number" name="page" id="page" min="1" max="{{ book_length }}" placeholder="page#">
+        <button type="submit" class="btn btn-outline-success">Go</button>
+    </form>
+    <iframe src="{{ page_pdf }}" width="600" height="830px"></iframe>
     <div>
         {% if prev_page %}
         <a href="{% url 'library:pdf_page' book_pk=book.id page_number=prev_page %}"
@@ -24,7 +32,6 @@
            class="btn btn-outline-primary">Next</a>
         {% endif %}
     </div>
-    <iframe src="{{ page_pdf }}" width="600" height="830px"></iframe>
 </body>
 </html>
 {% endblock %}
