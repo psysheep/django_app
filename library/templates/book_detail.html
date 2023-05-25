@@ -1,21 +1,52 @@
 {% extends 'parent.html' %}
 
 {% block content %}
-
 <title>Book ID:{{ book.pk }}</title>
 <br/>
-    <h2> {{ book.title }} </h2>
     <div class="card" style="width: 45rem;">
     <div class="card-header">
-    Rating
+        <strong class="card-title"> {{ book.title }} by {{ book.get_many_string.authors }}</strong>
+        <br/>
+        <small class="card-text">Published in {{ book.publishing_date }} </small>
     </div>
         <div class="card-body">
-            <h5 class="card-title"> by {{ book.get_many_string.authors }}</h5>
-            <p class="card-text">Published in {{ book.publishing_date }}
-                <br/><br/>
+            {% if average_rating %}
+            Rating: {{ average_rating }}<br/>
+            {% endif %}
+            <strong>Description:</strong><br/>
             {{ book.description }}</p>
-            <a href="{% url 'library:pdf_page' book_pk=book.pk page_number=1 %}" class="btn btn-outline-primary">Read</a>
-            <a href="{% url 'library:books' %}" class="btn btn-outline-primary">Back to list</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'library:pdf_page' book_pk=book.pk page_number=page %}" class="btn btn-primary">Read</a>
+                {% if reviewed %}
+                    <a href="{% url 'user:leave_review' book_pk=book.pk %}" class="btn btn-success">Update review</a>
+                {% else %}
+                    <a href="{% url 'user:leave_review' book_pk=book.pk %}" class="btn btn-primary">Leave a review</a>
+                {% endif %}
+            {% else %}
+            <a href="{% url 'user:login' %}?next={{ request.path }}" class="btn btn-primary">Login</a>
+            {% endif %}
+            <a href="{% url 'library:books' %}" class="btn btn-primary">Back to list</a>
+        </div>
+    </div>
+<br/>
+    <div class="card-header">
+            <strong class="card-title">Reviews:</strong>
+        </div>
+        <div class="card-body">
+            {% for review in reviews %}
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-text">{{ review.user.username }}</strong><br/>
+                        <small class="card-text">{{ review.created_at }}</small>
+                    </div>
+                    <div class="card-body">
+                        <em> "{{ review.subject }}"</em><br/>
+                        <i class="card-text">{{ review.text }}</i>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No reviews yet.</p>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

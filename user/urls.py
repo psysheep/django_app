@@ -5,7 +5,9 @@ from . import views
 app_name = 'user'
 
 urlpatterns = [
-    path("register", views.register_view, name="register"),
-    path("login", LoginView.as_view(), name="login"),
-    path("logout", LogoutView.as_view(), name="logout"),
+    path("register/", views.register_view, name="register"),
+    path("login/", LoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path('<slug:username>/', views.UserDetails.as_view(), name='user_page'),
+    path('book/<int:book_pk>/review/', views.LeaveReview.as_view(), name='leave_review'),
 ]

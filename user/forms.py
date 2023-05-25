@@ -1,16 +1,15 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm  # default django user creation form
-from django.contrib.auth.models import User  # built-in django user model
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
-class RegistrationForm(UserCreationForm):  # overriding or extending the UserCreationForm
-    email = forms.EmailField(required=True)  # add email as UserCreationForm does not have this field by default
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
     country = forms.CharField(required=True, max_length=20)
 
     class Meta:
-        model = User  # Creating a User model
+        model = User
         fields = ['username', 'email', 'country', 'password1', 'password2']
-        # Specifying the fields that we want to have
 
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)

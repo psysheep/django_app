@@ -1,5 +1,6 @@
 from django.utils.timezone import now
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Author(models.Model):
@@ -34,3 +35,11 @@ class Book(models.Model):
         authors = ', '.join(str(author) for author in self.authors.all())
         genres = ', '.join(str(genre) for genre in self.genres.all())
         return {'authors': authors, 'genres': genres}
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    page = models.IntegerField(blank=False)
+    header = models.CharField(max_length=30, blank=False)
+    text = models.TextField(max_length=200)

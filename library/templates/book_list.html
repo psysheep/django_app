@@ -1,33 +1,36 @@
-{% extends 'navbar.html' %}
-{% load static %}
+{% extends 'parent.html' %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Webble book list</title>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Title</th>
-      <th scope="col">Author(s)</th>
-      <th scope="col">Genre(s)</th>
-      <th scope="col">Publish date</th>
-    </tr>
-  </thead>
-  <tbody>
+<br>
+<div class="card" style="width: 50rem;">
+  <div class="card-header text-center">
+    <h5 class="card-title">Webble book list</h5>
+    <form method="GET" action="{% url 'library:books' %}">
+      <input type="text" name="search" placeholder="Search listed">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author(s)</th>
+          <th>Genre(s)</th>
+          <th>Publish date</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for book in object_list %}
-    <tr>
-        <td><a href="{% url 'library:book' pk=book.pk %}">{{ book.title }}</a></td>
-        <td>{{ book.get_many_string.authors }}</td>
-        <td>{{ book.get_many_string.genres }}</td>
-        <td>{{ book.publishing_date }}</td>
-    </tr>
-       {% endfor %}
-  </tbody>
-</table>
+          <tr>
+            <td><a href="{% url 'library:book' pk=book.pk %}">{{ book.title }}</a></td>
+            <td>{{ book.get_many_string.authors }}</td>
+            <td>{{ book.get_many_string.genres }}</td>
+            <td>{{ book.publishing_date }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}

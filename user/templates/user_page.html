@@ -1,0 +1,33 @@
+{% extends 'parent.html' %}
+
+{% block content %}
+<br>
+<div class="card-header">
+    <strong class="card-title">Reading progress:</strong>
+</div>
+    <div class="card-body">
+        {% for reading in reading_progress %}
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-text">Title: </strong>
+                <small class="card-text">
+                    <a href="{% url 'library:book' pk=reading.book.pk%}">
+                        {{ reading.book.title }}</a></small><br/>
+            </div>
+            <div class="card-body">
+                <small class="card-text">Current page:</small>
+                <small class="card-text">
+                    <a href="{% url 'library:pdf_page' book_pk=reading.book.pk page_number=reading.last_page %}">
+                        {{ reading.last_page }}</a></small><br>
+                <Strong class="card-text">Started reading:</Strong>
+                <small> {{ reading.started }}</small>
+                {% if reading.finished %}
+                    <Strong class="card-text">Finished reading: </Strong>
+                    <small> {{ reading.finished }}</small>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
