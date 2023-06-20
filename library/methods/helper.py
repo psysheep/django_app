@@ -5,10 +5,10 @@ from django.http import HttpResponse
 import base64
 from datetime import datetime
 from library.models import Book
-from user.models import ReadingProgress, Review
+from user.models import ReaderData, ReviewData
 
 
-def view_single_page(book_pk: int, page: int) -> dict:
+def encode_single_page(book_pk: int, page: int) -> dict:
     book = get_object_or_404(Book, pk=book_pk)
     with open(book.pdf.name, 'rb') as file:
         data = PyPDF2.PdfReader(file).pages[page-1]
@@ -30,7 +30,7 @@ def view_single_page(book_pk: int, page: int) -> dict:
 
 
 def update_progress(user, book_pk, page, length):
-    progress, created = ReadingProgress.objects.get_or_create(user=user, book_id=book_pk)
+    progress, created = ReaderData.objects.get_or_create(user=user, book_id=book_pk)
     if page == length and not progress.finished:
         progress.finished = datetime.now()
     if progress.last_page < page <= length:
@@ -42,16 +42,16 @@ def update_progress(user, book_pk, page, length):
 
 def check_reviewed(user, book_pk):
     try:
-        review = Review.objects.get(user=user, book=book_pk)
-    except Review.DoesNotExist:
+        review = ReviewData.objects.get(user=user, book=book_pk)
+    except ReviewData.DoesNotExist:
         review = None
     return review
 
 
 def get_user_page(user, book_pk):
     try:
-        page = ReadingProgress.objects.get(user=user, book=book_pk)
+        page = ReaderData.objects.get(user=user, book=book_pk)
         page = page.last_page
-    except ReadingProgress.DoesNotExist:
+    except ReaderData.DoesNotExist:
         page = 1
     return page

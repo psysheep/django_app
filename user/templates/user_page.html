@@ -17,7 +17,7 @@
             <div class="card-body">
                 <small class="card-text">Current page:</small>
                 <small class="card-text">
-                    <a href="{% url 'library:pdf_page' book_pk=reading.book.pk page_number=reading.last_page %}">
+                    <a href="{% url 'library:page_view' book_pk=reading.book.pk page_number=reading.last_page %}">
                         {{ reading.last_page }}</a></small><br>
                 <Strong class="card-text">Started reading:</Strong>
                 <small> {{ reading.started }}</small>

@@ -1,0 +1,46 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<br>
+    <title>{{ book.title }}</title>
+    <style>
+            body {
+            text-align: center;
+        }
+    </style>
+    <script>
+        function openBookmarkWindow() {
+            var title = prompt("Enter bookmark title:");
+            if (title !== null) {
+                document.getElementById("bookmark").value = title;
+                document.getElementById("bookmarkForm").submit();
+            }
+        }
+    </script>
+<body>
+    <div>
+        <form method="post">
+        {% csrf_token %}
+            <input type="hidden" name="bookmark_title" id="bookmark_title">
+            <button type="button" class="btn btn-info" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" onclick="openBookmarkWindow()">Bookmark</button>
+        </form>
+        {% if prev_page %}
+        <a href="{% url 'library:page_view' book_pk=book.id page_number=prev_page %}"
+           class="btn btn-outline-primary">Previous</a>
+        {% endif %}
+        <a href="{% url 'library:book' pk=book.id %}"
+           class="btn btn-outline-primary">Book details</a>
+        {% if next_page <= book_length %}
+        <a href="{% url 'library:page_view' book_pk=book.id page_number=next_page %}"
+           class="btn btn-outline-primary">Next</a>
+        {% endif %}
+    </div>
+    <iframe src="{{ page_pdf }}" width="600" height="822px"></iframe>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Go to page:</button>
+        <input type="number" name="goto" id="goto" min="1" max="{{ book_length }}"
+               placeholder="{{page_number}}/{{book_length}}">
+    </form>
+</body>
+{% endblock %}

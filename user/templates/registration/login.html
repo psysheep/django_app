@@ -1,12 +1,30 @@
 {% extends "parent.html" %}
 {% block content %}
 
+<style>
+    .login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .box {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+</style>
 
-{% load crispy_forms_tags %}
-<form method="POST">
-    {% csrf_token %}{{form|crispy}}
-<p>Don't have an account? Create one <a href="/user/register">Here</a></p>
-<button type="submit" class="btn btn-info">Login</button>
-</form>
-
+<div class="login">
+    <div class="box">
+        {% load crispy_forms_tags %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <p>Don't have an account? Create one <a href="/user/register">Here</a></p>
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.db import models
 from library.models import Book
 
 
-class Review(models.Model):
+class ReviewData(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0, blank=True, null=True)
@@ -21,7 +21,7 @@ class Review(models.Model):
         unique_together = ('book', 'user',)
 
 
-class ReadingProgress(models.Model):
+class ReaderData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     started = models.DateField(default=now)
@@ -30,3 +30,10 @@ class ReadingProgress(models.Model):
 
     class Meta:
         unique_together = ('book', 'user',)
+
+
+class Bookmarks(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    page = models.IntegerField(blank=False)
+    header = models.CharField(max_length=30, blank=False)
